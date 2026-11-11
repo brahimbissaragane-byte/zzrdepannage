@@ -12,6 +12,6 @@ Si le site devient vide après une modification : ouvre **History** de `index.ht
 
 ## Fichiers
 - `index.html` : le site (réglages dans `CONFIG`)
-- `hero.jpg` : grande photo (remplace-la par une vraie photo, même nom)
+- L'image du haut est une illustration (carte + trajet) dessinée dans `index.html`
 - `qr-affiche.png`, `qr-code.png` : QR code vers le site
 - `og-image.jpg` : image de partage WhatsApp / Facebook

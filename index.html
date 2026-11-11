@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ZZR Dépannage · Dépannage et remorquage à Mons et dans toute la Belgique</title>
+<meta name="description" content="ZZR Dépannage : dépannage, remorquage, panne sèche, crevaison, accident et enlèvement d'épaves à Mons, dans le Hainaut et partout en Belgique. À partir de 40 €. Calcule ton devis en ligne ou appelle le 0492 36 58 99.">
+<meta name="theme-color" content="#0B0C0C">
+<link rel="canonical" href="https://brahimbissaragane-byte.github.io/zzrdepannage/">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ZZR Dépannage">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ZZR Dépannage · Mons et toute la Belgique">
+<meta property="og:description" content="Panne, accident, panne sèche, crevaison, remorquage. À partir de 40 €. Calcule ton devis en ligne.">
+<meta property="og:image" content="https://brahimbissaragane-byte.github.io/zzrdepannage/og-image.jpg">
+<meta property="og:url" content="https://brahimbissaragane-byte.github.io/zzrdepannage/">
+<meta property="og:locale" content="fr_BE">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"AutomotiveBusiness","name":"ZZR Dépannage","description":"Dépannage et remorquage de véhicules : panne, accident, panne sèche, crevaison, enlèvement d'épaves.","telephone":"+32492365899","url":"https://brahimbissaragane-byte.github.io/zzrdepannage/","image":"https://brahimbissaragane-byte.github.io/zzrdepannage/og-image.jpg","priceRange":"À partir de 40 €","areaServed":[{"@type":"City","name":"Mons"},{"@type":"AdministrativeArea","name":"Hainaut"},{"@type":"Country","name":"Belgique"}]}
+</script>
+<link rel="preload" href="fonts/inter-400.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/inter-display-800i.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<style>
+  @font-face{font-family:'Inter';font-weight:400;font-display:swap;src:url(fonts/inter-400.woff) format('woff')}
+  @font-face{font-family:'Inter';font-weight:500;font-display:swap;src:url(fonts/inter-500.woff) format('woff')}
+  @font-face{font-family:'Inter';font-weight:600;font-display:swap;src:url(fonts/inter-600.woff) format('woff')}
+  @font-face{font-family:'Inter';font-weight:700;font-display:swap;src:url(fonts/inter-700.woff) format('woff')}
+  @font-face{font-family:'Inter Display';font-weight:800;font-style:italic;font-display:swap;src:url(fonts/inter-display-800i.woff) format('woff')}
+  :root{--bg:#0B0C0C;--s1:#131515;--s2:#191C1B;--s3:#222624;--bd:#262A28;--bd2:#333936;--tx:#F1F3F2;--tx2:#A4ABA7;--tx3:#6E7672;--ac:#2FCB72;--ac2:#26AE61;--acT:rgba(47,203,114,.10);--red:#EF5350;--amber:#E9B04A;--wa:#1EAA58;
+    --f:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--fc:'Inter Display',var(--f)}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 var(--f);-webkit-font-smoothing:antialiased;padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+  a{color:inherit}
+  button{font-family:inherit;cursor:pointer}
+  svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+  .wrap{max-width:640px;margin:0 auto;padding:0 14px}
+  /* en-tête */
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(14px + env(safe-area-inset-top)) 14px 10px;max-width:640px;margin:0 auto}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+  .logo svg{width:70px;height:40px}
+  .logo b{font-family:var(--fc);font-weight:800;font-style:italic;font-size:20px;letter-spacing:.02em;line-height:1}
+  .logo small{display:block;font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--tx3);margin-top:3px}
+  .top a.tel{font-weight:700;font-size:15px;color:var(--ac);text-decoration:none;white-space:nowrap}
+  /* accroche */
+  .hero{position:relative;margin:6px 14px 16px;border-radius:20px;overflow:hidden;background:var(--s1);border:1px solid var(--bd);max-width:612px}
+  @media(min-width:640px){.hero{margin:6px auto 16px}}
+  .hero .ph0{position:relative;aspect-ratio:16/9;background:#111 url(hero.jpg) 22% 40%/cover no-repeat}
+  .hero .ph0::after{content:'';position:absolute;left:0;right:0;bottom:0;height:40%;background:linear-gradient(180deg,rgba(19,21,21,0),var(--s1))}
+  .hero .in{position:relative;padding:4px 18px 20px}
+  .hero h1{margin:0;font-family:var(--fc);font-weight:800;font-style:italic;font-size:31px;line-height:1.06;letter-spacing:-.01em}
+  .hero h1 span{color:var(--ac)}
+  .hero p{margin:8px 0 0;color:#D6DCD8;font-size:16px}
+  .price{display:inline-flex;align-items:baseline;gap:6px;margin-top:12px;background:var(--ac);color:#05170C;font-weight:700;border-radius:999px;padding:6px 14px;font-size:15px}
+  .price b{font-size:22px}
+  .cta{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px}
+  .cta .price{margin-top:0}
+  .cta a{color:var(--ac);font-weight:600;font-size:16px;text-decoration:none;padding:8px 0}
+  #devis{scroll-margin-top:12px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+  .chips span{background:var(--s1);border:1px solid var(--bd);border-radius:999px;padding:7px 12px;font-size:14px;font-weight:600;color:var(--tx2)}
+  /* panneaux */
+  .panel{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:18px 16px;margin-bottom:12px}
+  .ph{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px}
+  .ph h2{margin:0;font-size:21px;font-weight:600}
+  .ph .step{font-size:13px;font-weight:600;color:var(--tx3)}
+  .lbl{display:block;font-size:13.5px;font-weight:600;color:var(--tx2);margin:0 0 7px}
+  input[type=text],input[type=tel],input[type=date],input[type=time],select{width:100%;height:54px;background:var(--s2);border:1px solid var(--bd);border-radius:10px;color:var(--tx);font:500 17px var(--f);padding:0 14px;outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none;min-width:0}
+  input[type=date],input[type=time]{color-scheme:dark;text-align:left;display:block}
+  input::-webkit-date-and-time-value{text-align:left}
+  input:focus,select:focus{border-color:var(--ac)}
+  input::placeholder{color:var(--tx3);font-weight:400}
+  select{text-align:center;padding:0 8px}
+  .f2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+  .fld{margin-top:16px}
+  .hint{font-size:14px;color:var(--tx3);margin-top:8px}
+  .hint b{color:var(--ac);font-weight:600}
+  /* points du trajet */
+  .depot{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:var(--s2);border:1px solid var(--bd);font-size:14.5px;color:var(--tx2)}
+  .depot b{color:var(--tx);font-weight:600}
+  .pt{width:14px;height:14px;border-radius:50%;flex:0 0 14px}
+  .pt-A{border:3px solid var(--tx);background:var(--s1)} .pt-B{background:var(--red);box-shadow:0 0 0 4px rgba(239,83,80,.18)} .pt-C{background:var(--ac);border-radius:3px}
+  .ac{margin-top:16px}
+  .lbl .pt{display:inline-block;vertical-align:-2px;margin-right:8px;width:12px;height:12px;flex:none}
+  .inwrap{position:relative}
+  .inwrap input{padding-right:58px}
+  .side{position:absolute;right:6px;top:6px;width:42px;height:42px;border-radius:8px;border:0;background:var(--s3);color:var(--tx2);display:grid;place-items:center}
+  .geo{display:flex;align-items:center;gap:8px;margin-top:8px;background:none;border:0;color:var(--ac);font-weight:600;font-size:15px;padding:6px 0}
+  .list{display:none;margin-top:6px;background:var(--s2);border:1px solid var(--bd2);border-radius:10px;overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.5)}
+  .list.open{display:block}
+  .it{display:flex;align-items:center;gap:12px;padding:11px 14px;min-height:58px;cursor:pointer}
+  .it+.it{border-top:1px solid var(--bd)}
+  .it:not(.info):active{background:var(--s3)}
+  .it .ico{flex:0 0 34px;height:34px;border-radius:50%;background:var(--s3);display:grid;place-items:center;color:var(--tx2)}
+  .it .ico svg.i{width:17px;height:17px}
+  .it .tx{flex:1;min-width:0}
+  .it b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .it small{display:block;color:var(--tx2);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .it.info{color:var(--tx2);font-size:14px;min-height:48px;cursor:default}
+  .spin{width:16px;height:16px;border:2px solid var(--bd2);border-top-color:var(--ac);border-radius:50%;animation:sp .8s linear infinite;flex:0 0 auto}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .okc{display:none;align-items:center;gap:8px;margin-top:6px;font-size:14px;color:var(--tx2)}
+  .okc.on{display:flex}
+  .okc svg{color:var(--ac);width:17px;height:17px}
+  .okc .tx{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .okc button{background:none;border:0;color:var(--ac);font-weight:600;font-size:14px;padding:6px 2px}
+  /* véhicules */
+  .veh{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .veh button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;height:88px;background:var(--s2);border:1px solid var(--bd);border-radius:12px;color:var(--tx2);font-weight:600;font-size:14px;line-height:1.15;padding:0 4px}
+  .veh button svg.i{width:38px;height:38px;stroke-width:1.5;color:var(--tx)}
+  .veh button.on{border-color:var(--ac);background:var(--acT);color:var(--tx)}
+  .veh button.on svg.i{color:var(--ac)}
+  /* carte + trajet */
+  #map{height:300px;border-radius:12px;border:1px solid var(--bd);background:#111;margin-top:4px}
+  .leaflet-container{font:inherit;background:#111}
+  .leaflet-tile-pane{filter:invert(1) hue-rotate(185deg) brightness(.85) contrast(.92) saturate(.6)}
+  .leaflet-control-attribution{background:rgba(11,12,12,.75)!important;color:#9aa!important}
+  .leaflet-control-attribution a{color:#cdd!important}
+  .mk{width:30px;height:38px}
+  .rb{display:none;margin-top:12px}
+  .rb.on{display:block}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--bd);border-radius:12px;overflow:hidden;background:var(--s2)}
+  .kpi{padding:12px}
+  .kpi+.kpi{border-left:1px solid var(--bd)}
+  .kpi b{display:block;font-size:24px;font-weight:600;line-height:1.1;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .kpi b small{font-size:14px;color:var(--tx2);font-weight:500}
+  .kpi span{display:block;margin-top:3px;font-size:11.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--tx3)}
+  .legs{list-style:none;margin:10px 0 0;padding:0}
+  .legs li{display:grid;grid-template-columns:24px 1fr auto;gap:10px;align-items:center;padding:9px 0;font-size:15px}
+  .legs li+li{border-top:1px solid var(--bd)}
+  .legs .sg{height:4px;border-radius:2px;background:var(--ac)} .legs .sg.d{background:none;height:0;border-top:4px dotted var(--ac);opacity:.7}
+  .legs small{display:block;color:var(--tx3);font-size:13px}
+  .legs .r{text-align:right;font-weight:600;white-space:nowrap}
+  .note{display:flex;gap:10px;align-items:flex-start;margin-top:10px;padding:11px 12px;border-radius:10px;font-size:14px}
+  .note.toll{background:rgba(233,176,74,.10);border:1px solid rgba(233,176,74,.38)}
+  .note.toll svg{color:var(--amber)}
+  .note.ok{background:var(--s2);border:1px solid var(--bd)} .note.ok svg{color:var(--ac)}
+  .note b{font-weight:600}
+  .warn{font-size:14px;color:var(--amber);margin-top:10px}
+  .warn:empty{display:none}
+  /* devis */
+  .qt{width:100%;border-collapse:collapse;font-size:16px;margin-top:6px}
+  .qt td{padding:10px 0;border-bottom:1px solid var(--bd);vertical-align:top}
+  .qt td:last-child{text-align:right;font-weight:600;white-space:nowrap;padding-left:12px;font-variant-numeric:tabular-nums}
+  .qt td small{display:block;color:var(--tx3);font-size:13px;font-weight:400}
+  .qt tr.ht td{font-weight:600;border-bottom:0;padding-bottom:2px} .qt tr.tva td{color:var(--tx2);border-bottom:0;padding-top:2px} .qt tr.tva td:last-child{font-weight:500}
+  .total{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-top:8px;padding-top:14px;border-top:2px solid var(--tx)}
+  .total span{font-size:15px;font-weight:600;color:var(--tx2);padding-bottom:5px}
+  .total b{font-size:40px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+  .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:56px;border-radius:12px;border:1px solid transparent;font:600 17px var(--f);text-decoration:none;color:var(--tx)}
+  .btn.primary{background:var(--ac);color:#05170C}
+  .btn.ghost{background:var(--s2);border-color:var(--bd)}
+  .mt{margin-top:14px}
+  .small{font-size:13px;color:var(--tx3);text-align:center;margin-top:8px}
+  /* services + pied de page */
+  .svc{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .svc div{background:var(--s2);border:1px solid var(--bd);border-radius:12px;padding:12px;font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px}
+  .svc svg{color:var(--ac)}
+  footer{color:var(--tx3);font-size:13.5px;padding:10px 0 20px;line-height:1.6}
+  footer b{color:var(--tx2)}
+  /* barre fixe */
+  .bar{position:fixed;left:0;right:0;bottom:0;z-index:1000;background:rgba(11,12,12,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--bd);padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+  .bar .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .bar a{display:flex;align-items:center;justify-content:center;gap:8px;height:52px;border-radius:12px;font-weight:700;font-size:17px;text-decoration:none}
+  .bar .call{background:var(--ac);color:#05170C}
+  .bar .wa{background:var(--wa);color:#fff}
+  .toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--tx);color:var(--bg);font-weight:600;padding:12px 18px;border-radius:12px;z-index:2000;display:none}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="#" aria-label="ZZR Dépannage">
+    <svg viewBox="0 0 92 52" aria-hidden="true"><path d="M15 0H92L77 52H0Z" fill="#2FCB72"/><text x="45" y="40.5" text-anchor="middle" textLength="60" lengthAdjust="spacingAndGlyphs" font-family="Inter Display, Inter, Arial, sans-serif" font-weight="800" font-style="italic" font-size="34" fill="#0B0C0C">ZZR</text></svg>
+    <span><b>DÉPANNAGE</b><small>Mons · Belgique</small></span>
+  </a>
+  <a class="tel" id="topTel" href="tel:+32492365899">0492 36 58 99</a>
+</header>
+
+<section class="hero">
+  <div class="ph0" role="img" aria-label="Dépanneuse ZZR Dépannage avec une voiture sur le plateau"></div>
+  <div class="in">
+    <h1>Dépannage &amp; remorquage<br><span>Mons et toute la Belgique</span></h1>
+    <p>Panne, accident, panne sèche, crevaison, enlèvement d’épaves.</p>
+    <div class="cta"><div class="price">À partir de <b>40&nbsp;€</b></div><a href="#devis">Calculer mon prix&nbsp;→</a></div>
+  </div>
+</section>
+
+<main class="wrap">
+  <div class="chips"><span>Intervention rapide</span><span>Prix clair avant de partir</span><span>Devis sur WhatsApp</span></div>
+
+  <section class="panel" id="devis">
+    <div class="ph"><h2>Ton devis en 1 minute</h2><span class="step">1/3</span></div>
+    <div class="depot"><span class="pt pt-A"></span><div>Départ de la dépanneuse : <b id="depotTxt">Mons</b></div></div>
+
+    <div class="ac" data-k="B">
+      <label class="lbl"><span class="pt pt-B"></span>Où es-tu en panne&nbsp;?</label>
+      <div class="inwrap"><input type="text" placeholder="Adresse, ville, autoroute…" autocomplete="off" enterkeyhint="search"><button class="side" aria-label="Rechercher"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button></div>
+      <button class="geo" id="geoBtn"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="7.5"/></svg><span>Utiliser ma position</span></button>
+      <div class="okc"></div><div class="list"></div>
+    </div>
+
+    <div class="ac" data-k="C">
+      <label class="lbl"><span class="pt pt-C"></span>Où déposer le véhicule&nbsp;?</label>
+      <div class="inwrap"><input type="text" placeholder="Garage, domicile… (vide = notre dépôt)" autocomplete="off" enterkeyhint="search"><button class="side" aria-label="Rechercher"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button></div>
+      <div class="okc"></div><div class="list"></div>
+    </div>
+
+    <div class="fld"><label class="lbl">Ton véhicule</label><div class="veh" id="veh"></div></div>
+    <div class="f2 fld">
+      <div><label class="lbl" for="rdvDate">Quand&nbsp;?</label><input type="date" id="rdvDate"></div>
+      <div><label class="lbl" for="rdvHeure">Heure</label><input type="time" id="rdvHeure" step="300"></div>
+    </div>
+    <div class="hint" id="nuitHint"></div>
+    <div class="warn" id="warn"></div>
+  </section>
+
+  <section class="panel">
+    <div class="ph"><h2>Ton trajet</h2><span class="step">2/3</span></div>
+    <div id="map"></div>
+    <div class="rb" id="rb"></div>
+  </section>
+
+  <section class="panel">
+    <div class="ph"><h2>Ton prix</h2><span class="step">3/3</span></div>
+    <div class="f2">
+      <div><label class="lbl" for="client">Ton nom</label><input type="text" id="client" placeholder="Prénom" autocomplete="given-name"></div>
+      <div><label class="lbl" for="clientTel">Ton téléphone</label><input type="tel" id="clientTel" placeholder="0470 12 34 56" autocomplete="tel"></div>
+    </div>
+    <table class="qt" id="qTable"></table>
+    <div class="total"><span id="totLbl">Total TTC estimé</span><b id="qTotal">–</b></div>
+    <a class="btn primary mt" id="waBtn" href="https://api.whatsapp.com/send?phone=32492365899" target="_blank" rel="noopener"><svg class="i" viewBox="0 0 24 24"><path d="M4 19V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2H8.5z"/><path d="M8.5 9.5h7M8.5 12.5h4.5"/></svg><span>Envoyer le devis sur WhatsApp</span></a>
+    <div class="small">Prix estimé, confirmé par téléphone avant l’intervention.</div>
+  </section>
+
+  <section class="panel">
+    <div class="ph"><h2>Nos interventions</h2></div>
+    <div class="svc">
+      <div><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Panne</div>
+      <div><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Accident</div>
+      <div><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Panne sèche</div>
+      <div><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Crevaison</div>
+      <div><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Remorquage</div>
+      <div><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Épaves</div>
+    </div>
+    <p class="hint">Mons, Jemappes, Quaregnon, Saint-Ghislain, Boussu, Frameries, La Louvière, Charleroi, Tournai… et partout en Belgique.</p>
+  </section>
+
+  <footer id="legal"></footer>
+</main>
+
+<nav class="bar"><div class="in">
+  <a class="call" id="barCall" href="tel:+32492365899"><svg class="i" viewBox="0 0 24 24"><path d="M5.5 4h3l1.5 4-2 1.3a11 11 0 0 0 5.2 5.2l1.3-2 4 1.5v3a2 2 0 0 1-2 2A16 16 0 0 1 3.5 6a2 2 0 0 1 2-2z"/></svg>Appeler</a>
+  <a class="wa" id="barWa" href="https://api.whatsapp.com/send?phone=32492365899" target="_blank" rel="noopener"><svg class="i" viewBox="0 0 24 24"><path d="M4 19V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2H8.5z"/></svg>WhatsApp</a>
+</div></nav>
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+/* ======================================================================
+   RÉGLAGES — c'est ici que tu changes tes prix, ton numéro, ton dépôt.
+   (Sur GitHub : ouvre index.html, touche le crayon, modifie, « Commit ».)
+   ====================================================================== */
+const CONFIG = {
+  nom: 'ZZR Dépannage',
+  telephone: '+32 492 36 58 99',      // affiché sur le site
+  whatsapp: '32492365899',            // numéro WhatsApp sans + ni espaces
+  depot: { titre: 'Mons', detail: '7000 Mons, Belgique', lat: 50.4542, lon: 3.9523 },  // départ de la dépanneuse
+  compterRetour: true,                // compter le retour au dépôt
+  tva: 21,                            // TVA en %
+  prixTTC: true,                      // true = les prix ci-dessous sont TVA comprise (ce que paie le client)
+  gasoil: 1.70,                       // prix du gasoil en € / litre
+  kmInclus: 10,                       // km compris dans la prise en charge
+  majorationNuit: 50,                 // % ajouté la nuit (20 h – 7 h) et le week-end
+  conso: { leger: { vide: 12, charge: 17 }, lourd: { vide: 28, charge: 38 } },   // L / 100 km
+  peageKm: { leger: 0.16, lourd: 0.31 },  // € par km d'autoroute à péage (estimation : classe 2 / classe 4 en France)
+  tarifs: {                           // prise en charge (pc) en € et prix au km en €
+    moto: { pc: 40, km: 0.9 }, voit: { pc: 40, km: 1.1 }, util: { pc: 60, km: 1.4 },
+    camp: { pc: 250, km: 2.2 }, cam: { pc: 380, km: 3.0 }, autre: { pc: 40, km: 1.2 }
+  },
+  legal: { societe: '', adresse: '', bce: '', email: '' }   // à compléter : obligatoire pour une entreprise
+};
+
+/* ====================================================================== */
+const IC={car:'<svg class="i" viewBox="0 0 24 24"><path d="M3 16v-3.5L5 8h11l3 4.5h1a1 1 0 0 1 1 1V16"/><path d="M4.5 12.5H19"/><circle cx="7" cy="16.5" r="1.8"/><circle cx="17" cy="16.5" r="1.8"/><path d="M8.8 16.5h6.4"/></svg>',
+moto:'<svg class="i" viewBox="0 0 24 24"><circle cx="5.5" cy="16" r="3"/><circle cx="18.5" cy="16" r="3"/><path d="M5.5 16l3.5-5.5h5.5L18.5 16"/><path d="M14.5 10.5L13 7h-2.5"/><path d="M8.5 10.5H6"/></svg>',
+van:'<svg class="i" viewBox="0 0 24 24"><path d="M2.5 16V7a1 1 0 0 1 1-1H15l4 4.5 2 1V16"/><path d="M15 6v5h5"/><circle cx="7" cy="16.5" r="1.8"/><circle cx="17" cy="16.5" r="1.8"/><path d="M8.8 16.5h6.4"/></svg>',
+camper:'<svg class="i" viewBox="0 0 24 24"><path d="M2.5 16V8a2 2 0 0 1 2-2h11l2.5 4h2a1 1 0 0 1 1 1v5"/><rect x="5.5" y="9" width="4" height="3" rx=".5"/><path d="M12.5 9h3"/><circle cx="7" cy="16.5" r="1.8"/><circle cx="17" cy="16.5" r="1.8"/><path d="M8.8 16.5h6.4"/></svg>',
+truck:'<svg class="i" viewBox="0 0 24 24"><path d="M2.5 16V5.5h11V16"/><path d="M13.5 9h4l3 3.5V16"/><circle cx="6.5" cy="16.5" r="1.8"/><circle cx="17" cy="16.5" r="1.8"/><path d="M8.3 16.5h6.9"/></svg>',
+tool:'<svg class="i" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.2 5.2L4 17l3 3 5.5-5.5a4 4 0 0 0 5.2-5.2l-2.5 2.5-2.7-.5-.5-2.7z"/></svg>',
+pin:'<svg class="i" viewBox="0 0 24 24"><path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>',
+city:'<svg class="i" viewBox="0 0 24 24"><path d="M4 20V10l5-3v13M9 20V4l11 4v12M3 20h18M13 10h3M13 13.5h3M13 17h3"/></svg>',
+check:'<svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg>',
+warn:'<svg class="i" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17.2h.01"/></svg>'};
+const VEHICLES=[{id:'moto',ic:'moto',n:'Moto / scooter',truck:'leger'},{id:'voit',ic:'car',n:'Voiture',truck:'leger'},{id:'util',ic:'van',n:'Camionnette',truck:'leger'},{id:'camp',ic:'camper',n:'Camping-car',truck:'lourd'},{id:'cam',ic:'truck',n:'Camion / PL',truck:'lourd'},{id:'autre',ic:'tool',n:'Autre',truck:'leger'}];
+const GAZ=`Bruxelles|Brussel Brussels|1000|50.8467|4.3525|BE|1
+Antwerpen|Anvers|2000|51.2194|4.4025|BE|1
+Gent|Gand|9000|51.0543|3.7174|BE|1
+Liège|Luik|4000|50.6326|5.5797|BE|1
+Charleroi||6000|50.4108|4.4446|BE|1
+Namur|Namen|5000|50.4674|4.8720|BE|1
+Mons|Bergen|7000|50.4542|3.9523|BE|1
+Brugge|Bruges|8000|51.2093|3.2247|BE|1
+Leuven|Louvain|3000|50.8798|4.7005|BE|1
+Tournai|Doornik|7500|50.6056|3.3888|BE|1
+La Louvière||7100|50.4794|4.1874|BE|1
+Hasselt||3500|50.9307|5.3378|BE|1
+Kortrijk|Courtrai|8500|50.8280|3.2649|BE|1
+Oostende|Ostende|8400|51.2154|2.9286|BE|1
+Arlon|Aarlen|6700|49.6833|5.8167|BE|1
+Mechelen|Malines|2800|51.0259|4.4776|BE|2
+Aalst|Alost|9300|50.9378|4.0403|BE|2
+Sint-Niklaas|Saint-Nicolas|9100|51.1652|4.1433|BE|2
+Genk||3600|50.9650|5.5000|BE|2
+Roeselare|Roulers|8800|50.9469|3.1227|BE|2
+Ieper|Ypres|8900|50.8503|2.8853|BE|2
+Waregem||8790|50.8893|3.4267|BE|2
+Oudenaarde|Audenarde|9700|50.8450|3.6050|BE|2
+Geraardsbergen|Grammont|9500|50.7731|3.8822|BE|2
+Ninove||9400|50.8282|4.0249|BE|2
+Vilvoorde|Vilvorde|1800|50.9281|4.4245|BE|2
+Zaventem||1930|50.8836|4.4728|BE|3
+Halle|Hal|1500|50.7339|4.2345|BE|2
+Waterloo||1410|50.7147|4.3991|BE|2
+Braine-l'Alleud|Eigenbrakel|1420|50.6833|4.3681|BE|2
+Nivelles|Nijvel|1400|50.5976|4.3285|BE|2
+Tubize|Tubeke|1480|50.6929|4.2047|BE|2
+Wavre|Waver|1300|50.7172|4.6011|BE|2
+Ottignies-Louvain-la-Neuve|Ottignies LLN|1340|50.6680|4.5800|BE|2
+Gembloux||5030|50.5610|4.6917|BE|2
+Sambreville|Tamines Auvelais|5060|50.4314|4.6095|BE|2
+Andenne||5300|50.4895|5.0961|BE|2
+Dinant||5500|50.2606|4.9122|BE|2
+Ciney||5590|50.2948|5.0999|BE|2
+Philippeville||5600|50.1958|4.5433|BE|2
+Couvin||5660|50.0522|4.4944|BE|2
+Walcourt||5650|50.2531|4.4339|BE|3
+Florennes||5620|50.2511|4.6064|BE|3
+Huy|Hoei|4500|50.5183|5.2400|BE|2
+Seraing||4100|50.5833|5.5000|BE|2
+Herstal||4040|50.6639|5.6322|BE|2
+Verviers||4800|50.5891|5.8624|BE|2
+Spa||4900|50.4920|5.8640|BE|2
+Eupen||4700|50.6283|6.0353|BE|2
+Waremme|Borgworm|4300|50.6970|5.2550|BE|2
+Marche-en-Famenne||6900|50.2268|5.3442|BE|2
+Bastogne||6600|50.0000|5.7158|BE|2
+Libramont-Chevigny|Libramont|6800|49.9204|5.3790|BE|2
+Bouillon||6830|49.7944|5.0672|BE|2
+Virton||6760|49.5675|5.5330|BE|2
+Mouscron|Moeskroen|7700|50.7444|3.2139|BE|2
+Comines-Warneton|Comines Komen|7780|50.7700|3.0000|BE|2
+Ath|Aat|7800|50.6297|3.7783|BE|2
+Lessines|Lessen|7860|50.7120|3.8360|BE|2
+Enghien|Edingen|7850|50.6922|4.0403|BE|2
+Soignies|Zinnik|7060|50.5794|4.0711|BE|2
+Braine-le-Comte||7090|50.6094|4.1422|BE|2
+Binche||7130|50.4106|4.1658|BE|2
+Péruwelz||7600|50.5089|3.5928|BE|2
+Leuze-en-Hainaut|Leuze|7900|50.6000|3.6167|BE|2
+Saint-Ghislain||7330|50.4486|3.8186|BE|2
+Boussu||7300|50.4342|3.7950|BE|2
+Quaregnon||7390|50.4408|3.8653|BE|2
+Frameries||7080|50.4083|3.8967|BE|2
+Colfontaine||7340|50.4103|3.8519|BE|2
+Dour||7370|50.3953|3.7781|BE|2
+Quiévrain||7380|50.4053|3.6828|BE|2
+Manage||7170|50.5078|4.2353|BE|2
+Chimay||6460|50.0483|4.3164|BE|2
+Hensies||7350|50.4319|3.6842|BE|3
+Bernissart||7320|50.4747|3.6467|BE|3
+Honnelles||7387|50.3600|3.7300|BE|3
+Quévy||7040|50.3667|3.9378|BE|3
+Jurbise||7050|50.5300|3.9100|BE|3
+Lens||7870|50.5550|3.9000|BE|3
+Chièvres||7950|50.5878|3.8078|BE|3
+Brugelette||7940|50.5944|3.8536|BE|3
+Belœil|Beloeil|7970|50.5486|3.7356|BE|3
+Antoing||7640|50.5672|3.4481|BE|3
+Rumes||7618|50.5550|3.3020|BE|3
+Brunehaut||7620|50.5100|3.3900|BE|3
+Estaimpuis||7730|50.7040|3.2720|BE|3
+Frasnes-lez-Anvaing||7911|50.6760|3.5960|BE|3
+Silly|Opzullik|7830|50.6490|3.9240|BE|3
+Le Rœulx|Le Roeulx|7070|50.5031|4.1122|BE|3
+Écaussinnes|Ecaussinnes|7190|50.5630|4.1760|BE|3
+Seneffe||7180|50.5311|4.2633|BE|3
+Chapelle-lez-Herlaimont||7160|50.4740|4.2830|BE|3
+Morlanwelz||7140|50.4544|4.2400|BE|3
+Estinnes||7120|50.4000|4.1000|BE|3
+Erquelinnes||6560|50.3083|4.1233|BE|3
+Merbes-le-Château||6567|50.3250|4.1630|BE|3
+Lobbes||6540|50.3530|4.2640|BE|3
+Thuin||6530|50.3397|4.2875|BE|3
+Anderlues||6150|50.4050|4.2700|BE|3
+Fontaine-l'Évêque|Fontaine l Eveque|6140|50.4092|4.3233|BE|3
+Courcelles||6180|50.4617|4.3744|BE|3
+Fleurus||6220|50.4833|4.5506|BE|3
+Châtelet||6200|50.4011|4.5244|BE|3
+Farciennes||6240|50.4300|4.5480|BE|3
+Gerpinnes||6280|50.3378|4.5258|BE|3
+Ham-sur-Heure-Nalinnes|Ham sur Heure Nalinnes|6120|50.3220|4.3940|BE|3
+Beaumont||6500|50.2361|4.2381|BE|3
+Sivry-Rance|Sivry Rance|6470|50.1670|4.1830|BE|3
+Momignies||6590|50.0270|4.1640|BE|3
+Froidchapelle||6440|50.1510|4.3290|BE|3
+Jemappes||7012|50.4522|3.8889|BE|3|Mons
+Cuesmes||7033|50.4367|3.9233|BE|3|Mons
+Ghlin||7011|50.4872|3.9056|BE|3|Mons
+Nimy||7020|50.4761|3.9531|BE|3|Mons
+Havré|Havre|7021|50.4678|4.0436|BE|3|Mons
+Obourg||7034|50.4711|4.0139|BE|3|Mons
+Saint-Symphorien||7030|50.4372|4.0153|BE|3|Mons
+Hyon||7022|50.4361|3.9583|BE|3|Mons
+Flénu|Flenu|7012|50.4372|3.8872|BE|3|Mons
+Maisières||7020|50.4831|3.9661|BE|3|Mons
+Spiennes||7032|50.4250|3.9850|BE|3|Mons
+Mesvin||7022|50.4220|3.9600|BE|3|Mons
+Ciply||7024|50.4200|3.9483|BE|3|Mons
+Villers-Saint-Ghislain||7031|50.4400|4.0400|BE|3|Mons
+Harmignies||7022|50.4080|4.0200|BE|3|Mons
+Marcinelle||6001|50.3925|4.4317|BE|3|Charleroi
+Gosselies||6041|50.4664|4.4317|BE|3|Charleroi
+Jumet||6040|50.4417|4.4183|BE|3|Charleroi
+Montignies-sur-Sambre||6061|50.4097|4.4853|BE|3|Charleroi
+Marchienne-au-Pont||6030|50.4050|4.3950|BE|3|Charleroi
+Mont-sur-Marchienne||6032|50.3878|4.4044|BE|3|Charleroi
+Couillet||6010|50.3878|4.4678|BE|3|Charleroi
+Gilly||6060|50.4214|4.4789|BE|3|Charleroi
+Ransart||6043|50.4567|4.4683|BE|3|Charleroi
+Lodelinsart||6042|50.4300|4.4567|BE|3|Charleroi
+Dampremy||6020|50.4183|4.4283|BE|3|Charleroi
+Monceau-sur-Sambre||6031|50.4167|4.3833|BE|3|Charleroi
+Houdeng-Goegnies|Houdeng|7110|50.4860|4.1400|BE|3|La Louvière
+Strépy-Bracquegnies|Strepy|7110|50.4750|4.1300|BE|3|La Louvière
+Haine-Saint-Pierre||7100|50.4620|4.2070|BE|3|La Louvière
+Haine-Saint-Paul||7100|50.4700|4.1900|BE|3|La Louvière
+Saint-Vaast||7100|50.4500|4.1700|BE|3|La Louvière
+Maurage||7110|50.4600|4.0900|BE|3|La Louvière
+Hornu||7301|50.4333|3.8278|BE|3|Boussu
+Baudour||7331|50.4844|3.8333|BE|3|Saint-Ghislain
+Tertre||7333|50.4744|3.8150|BE|3|Saint-Ghislain
+La Bouverie||7080|50.4150|3.8730|BE|3|Frameries
+Wasmes||7340|50.4140|3.8480|BE|3|Colfontaine
+Pâturages|Paturages|7340|50.4070|3.8580|BE|3|Colfontaine
+Élouges|Elouges|7370|50.4000|3.7500|BE|3|Dour
+Maastricht||6211|50.8514|5.6910|NL|1
+Eindhoven||5611|51.4416|5.4697|NL|1
+Breda||4811|51.5719|4.7683|NL|2
+Rotterdam||3011|51.9244|4.4777|NL|1
+Amsterdam||1012|52.3676|4.9041|NL|1
+Vlissingen|Flessingue|4381|51.4426|3.5736|NL|2
+Terneuzen||4531|51.3358|3.8277|NL|3
+Luxembourg|Letzebuerg|1009|49.6116|6.1319|LU|1
+Esch-sur-Alzette||4001|49.4958|5.9806|LU|2
+Aachen|Aix-la-Chapelle|52062|50.7753|6.0839|DE|1
+Köln|Cologne Koln|50667|50.9375|6.9603|DE|1
+Trier|Trèves|54290|49.7499|6.6371|DE|2
+Maubeuge||59600|50.2775|3.9734|FR|1
+Feignies||59750|50.2981|3.9161|FR|2
+Hautmont||59330|50.2497|3.9253|FR|2
+Louvroil||59720|50.2639|3.9650|FR|3
+Jeumont||59460|50.2950|4.1031|FR|2
+Ferrière-la-Grande||59680|50.2550|4.0128|FR|3
+Rousies||59131|50.2733|4.0089|FR|3
+Assevent||59600|50.2900|4.0110|FR|3
+Recquignies||59245|50.2840|4.0440|FR|3
+Bettignies||59600|50.3360|3.9700|FR|3
+Élesmes|Elesmes|59600|50.3110|3.9950|FR|3
+Gognies-Chaussée||59600|50.3270|3.9340|FR|3
+Villers-Sire-Nicole||59600|50.3320|4.0120|FR|3
+Bavay||59570|50.2981|3.7939|FR|2
+Aulnoye-Aymeries||59620|50.2033|3.8350|FR|2
+Berlaimont||59145|50.2017|3.8139|FR|3
+Avesnes-sur-Helpe||59440|50.1231|3.9281|FR|2
+Fourmies||59610|50.0150|4.0539|FR|2
+Solre-le-Château||59740|50.1750|4.0890|FR|3
+Cousolre||59149|50.2450|4.1500|FR|3
+Le Quesnoy||59530|50.2481|3.6369|FR|2
+Valenciennes||59300|50.3570|3.5235|FR|1
+Anzin||59410|50.3722|3.5050|FR|3
+Saint-Amand-les-Eaux||59230|50.4475|3.4278|FR|2
+Condé-sur-l'Escaut||59163|50.4556|3.5917|FR|3
+Onnaing||59264|50.3878|3.5978|FR|3
+Quiévrechain||59920|50.3936|3.6681|FR|3
+Denain||59220|50.3292|3.3958|FR|2
+Cambrai||59400|50.1760|3.2350|FR|1
+Caudry||59540|50.1250|3.4120|FR|2
+Le Cateau-Cambrésis|Le Cateau|59360|50.1039|3.5428|FR|3
+Douai||59500|50.3700|3.0800|FR|2
+Lille||59000|50.6292|3.0573|FR|1
+Roubaix||59100|50.6942|3.1746|FR|2
+Tourcoing||59200|50.7239|3.1612|FR|2
+Villeneuve-d'Ascq||59650|50.6233|3.1450|FR|3
+Armentières||59280|50.6872|2.8800|FR|2
+Hazebrouck||59190|50.7250|2.5380|FR|3
+Dunkerque|Dunkirk|59140|51.0343|2.3768|FR|1
+Arras||62000|50.2910|2.7775|FR|1
+Lens||62300|50.4322|2.8333|FR|2
+Liévin||62800|50.4219|2.7786|FR|3
+Hénin-Beaumont||62110|50.4214|2.9508|FR|3
+Béthune||62400|50.5303|2.6408|FR|2
+Saint-Omer||62500|50.7500|2.2520|FR|2
+Calais||62100|50.9513|1.8587|FR|1
+Boulogne-sur-Mer|Boulogne|62200|50.7264|1.6147|FR|2
+Amiens||80000|49.8941|2.2958|FR|1
+Abbeville||80100|50.1054|1.8357|FR|3
+Saint-Quentin||02100|49.8465|3.2876|FR|2
+Hirson||02500|49.9214|4.0839|FR|2
+Guise||02120|49.9000|3.6270|FR|3
+Vervins||02140|49.8350|3.9090|FR|3
+Laon||02000|49.5640|3.6199|FR|2
+Soissons||02200|49.3817|3.3236|FR|3
+Reims||51100|49.2583|4.0317|FR|1
+Charleville-Mézières|Charleville|08000|49.7620|4.7260|FR|2
+Sedan||08200|49.7019|4.9403|FR|3
+Givet||08600|50.1380|4.8260|FR|3
+Rocroi||08230|49.9260|4.5220|FR|3
+Metz||57000|49.1193|6.1757|FR|1
+Paris||75000|48.8566|2.3522|FR|1
+Rouen||76000|49.4432|1.0999|FR|1
+Le Havre||76600|49.4944|0.1079|FR|1
+Caen||14000|49.1829|-0.3707|FR|1
+Nancy||54000|48.6921|6.1844|FR|1
+Strasbourg||67000|48.5734|7.7521|FR|1
+Troyes||10000|48.2973|4.0744|FR|1
+Orléans||45000|47.9030|1.9093|FR|1
+Tours||37000|47.3941|0.6848|FR|1
+Rennes||35000|48.1173|-1.6778|FR|1
+Brest||29200|48.3904|-4.4861|FR|1
+Nantes||44000|47.2184|-1.5536|FR|1
+Dijon||21000|47.3220|5.0415|FR|1
+Lyon||69000|45.7640|4.8357|FR|1
+Clermont-Ferrand||63000|45.7772|3.0870|FR|1
+Limoges||87000|45.8336|1.2611|FR|1
+Bordeaux||33000|44.8378|-0.5792|FR|1
+Toulouse||31000|43.6047|1.4442|FR|1
+Montpellier||34000|43.6108|3.8767|FR|1
+Marseille||13000|43.2965|5.3698|FR|1
+Nice||06000|43.7102|7.2620|FR|1`;
+
+const $=id=>document.getElementById(id);
+const eur=n=>(Math.round(n*100)/100).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+const fr1=n=>n.toLocaleString('fr-FR',{minimumFractionDigits:1,maximumFractionDigits:1});
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(t){const el=$('toast');el.textContent=t;el.style.display='block';clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',2000);}
+function fmtDur(m){m=Math.round(m);const h=Math.floor(m/60),mm=m%60;return h?`${h} h ${String(mm).padStart(2,'0')}`:`${mm} min`;}
+function hav(a,b){const R=6371,r=Math.PI/180,dLa=(b.lat-a.lat)*r,dLo=(b.lon-a.lon)*r,x=Math.sin(dLa/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dLo/2)**2;return 2*R*Math.asin(Math.sqrt(x));}
+const roadFactor=d=>d<15?1.35:d<60?1.28:1.22;
+const state={veh:'voit',pts:{A:{...CONFIG.depot},B:null,C:null},legs:null,src:'',quoteNo:null};
+
+/* ---------- recherche d'adresse : annuaire intégré (instantané) + Photon / OpenStreetMap ---------- */
+const CCN={BE:'Belgique',FR:'France',NL:'Pays-Bas',LU:'Luxembourg',DE:'Allemagne'};
+const CCW={BE:'belgique belgie belgium',FR:'france',NL:'pays bas nederland hollande',LU:'luxembourg',DE:'allemagne deutschland'};
+const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/œ/g,'oe').replace(/[-'’.,()/]/g,' ').replace(/\s+/g,' ').trim();
+const GZ=GAZ.split('\n').map(l=>{const[n,alt,cp,lat,lon,cc,t,par]=l.split('|');return{n,cp,lat:+lat,lon:+lon,cc,t:+t,par:par||'',nn:norm(n),an:norm(alt||''),words:norm(n+' '+(alt||'')).split(' '),ccw:CCW[cc].split(' ')};});
+const toRes=g=>({titre:g.n,detail:`${g.cp} ${g.par||g.n}, ${CCN[g.cc]}`,lat:g.lat,lon:g.lon,src:'local'});
+function localSearch(q,ref){const toks=norm(q).split(' ').filter(Boolean);if(!toks.length)return[];const full=norm(q),out=[];
+  for(const g of GZ){let sc=0,hit=false,ok=true;
+    if(g.nn===full||g.an===full){sc+=30;hit=true;}
+    else for(const t of toks){
+      if(/^\d+$/.test(t)){if(g.cp.startsWith(t)){sc+=4;hit=true;}else{ok=false;break;}continue;}
+      if(g.nn===t){sc+=12;hit=true;}else if(g.nn.startsWith(t)){sc+=8;hit=true;}else if(g.words.some(w=>w.startsWith(t))){sc+=5;hit=true;}
+      else if(t.length>=2&&g.ccw.some(w=>w.startsWith(t))){sc+=1;}else{ok=false;break;}}
+    if(!ok||!hit)continue;sc+=(3-g.t)*1.5;if(ref)sc-=Math.min(4,hav(ref,g)/50);out.push({g,sc});}
+  out.sort((a,b)=>b.sc-a.sc);return out.slice(0,4).map(o=>toRes(o.g));}
+const STREET=/\b(rue|r|av|ave|avenue|ch|chee|chaussee|bd|boulevard|place|pl|route|rte|chemin|allee|impasse|quai|square|sentier|clos|cite|residence|zoning|zone|zi|za|parc|autoroute|sortie|aire|station|gare|garage|hopital|centre|cc|parking|pont|port|aeroport|rond|point|e\d{1,3}|a\d{1,3}|n\d{1,3}|r\d)\b/;
+function needRemote(q,loc){const n=norm(q);return !loc.length||STREET.test(n)||n.split(' ').some(t=>/\d/.test(t)&&!/^\d{4,5}$/.test(t));}
+function photonFeat(f){const p=f.properties||{},[lon,lat]=f.geometry.coordinates;const city=p.city||p.town||p.village||p.locality||p.district||p.county||'';
+  let titre=p.housenumber&&p.street?`${p.street} ${p.housenumber}`:(p.name||p.street||city);
+  if(p.name&&p.street&&!p.housenumber&&p.osm_key!=='highway')titre=p.name;
+  const detail=[[p.postcode,city].filter(Boolean).join(' '),CCN[(p.countrycode||'').toUpperCase()]||p.country].filter(Boolean).join(', ');
+  return{titre:titre||city,detail,lat,lon,src:'osm'};}
+const ctrl={},timers={},cache=new Map();
+async function remoteSearch(k,q){const ref=refFor(k)||CONFIG.depot,key=q.toLowerCase();if(cache.has(key))return cache.get(key);
+  if(ctrl[k])ctrl[k].abort();ctrl[k]=new AbortController();
+  const url=`https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&lang=fr&limit=6&lat=${ref.lat}&lon=${ref.lon}&bbox=1.4,48.6,7.6,52.2`;
+  const r=await fetch(url,{signal:ctrl[k].signal});if(!r.ok)throw new Error('http');const j=await r.json();
+  const seen=new Set(),res=[];(j.features||[]).forEach(f=>{const x=photonFeat(f);const id=x.titre+'|'+x.detail;if(x.titre&&!seen.has(id)){seen.add(id);res.push(x);}});
+  cache.set(key,res.slice(0,5));return res.slice(0,5);}
+const boxOf=k=>document.querySelector(`.ac[data-k="${k}"]`);
+function refFor(k){return k==='B'?state.pts.A:(state.pts.B||state.pts.A);}
+function renderList(k,loc,remote,st){const list=boxOf(k).querySelector('.list'),ref=refFor(k);list.innerHTML='';
+  const add=a=>a.forEach(r=>{const d=document.createElement('div');d.className='it';const km=ref?Math.round(hav(ref,r)*roadFactor(hav(ref,r))):null;
+    d.innerHTML=`<span class="ico">${r.src==='local'?IC.city:IC.pin}</span><span class="tx"><b>${esc(r.titre)}</b><small>${esc(r.detail)}</small></span>${km!=null?`<small style="color:var(--tx3);white-space:nowrap">${km} km</small>`:''}`;
+    d.onclick=()=>choose(k,r);list.appendChild(d);});
+  if(remote&&remote.length)add(remote);if(loc.length)add(loc);
+  if(st==='loading'){const d=document.createElement('div');d.className='it info';d.innerHTML='<span class="spin"></span>Recherche des adresses…';list.appendChild(d);}
+  else if(st&&st!=='done'){const d=document.createElement('div');d.className='it info';d.textContent=st;list.appendChild(d);}
+  if(!list.children.length){const d=document.createElement('div');d.className='it info';d.textContent='Aucune adresse trouvée. Essaie avec la ville ou le code postal.';list.appendChild(d);}
+  list.classList.add('open');}
+function onType(k){const q=boxOf(k).querySelector('input').value.trim();clearTimeout(timers[k]);if(ctrl[k])ctrl[k].abort();
+  if(q.length<2){boxOf(k).querySelector('.list').classList.remove('open');return;}
+  const loc=localSearch(q,refFor(k)),want=needRemote(q,loc)&&q.length>=3;renderList(k,loc,null,want?'loading':'');if(!want)return;
+  timers[k]=setTimeout(async()=>{try{const rr=await remoteSearch(k,q);renderList(k,loc,rr,'done');}catch(e){if(e.name==='AbortError')return;renderList(k,loc,null,'Recherche indisponible, vérifie ta connexion.');}},350);}
+async function resolveAuto(k){const q=boxOf(k).querySelector('input').value.trim();if(!q)return false;const loc=localSearch(q,refFor(k));
+  if(loc.length&&!needRemote(q,loc)){choose(k,loc[0]);return true;}
+  try{const rr=await remoteSearch(k,q);if(rr.length){choose(k,rr[0]);return true;}}catch(e){}
+  if(loc.length){choose(k,loc[0]);return true;}return false;}
+function choose(k,r){const box=boxOf(k);clearTimeout(timers[k]);if(ctrl[k])ctrl[k].abort();box.querySelector('.list').classList.remove('open');
+  state.pts[k]={titre:String(r.titre||''),detail:String(r.detail||''),lat:+r.lat,lon:+r.lon};box.querySelector('input').value=state.pts[k].titre;box.querySelector('input').blur();showOk(k);routeNow();}
+function showOk(k){const ok=boxOf(k).querySelector('.okc'),p=state.pts[k];if(!p){ok.classList.remove('on');ok.innerHTML='';return;}
+  ok.innerHTML=`${IC.check}<span class="tx">${esc(p.detail)}</span><button data-clear>Modifier</button>`;ok.classList.add('on');
+  ok.querySelector('[data-clear]').onclick=()=>{state.pts[k]=null;showOk(k);const i=boxOf(k).querySelector('input');i.value='';i.focus();routeNow();};}
+document.querySelectorAll('.ac').forEach(box=>{const k=box.dataset.k,inp=box.querySelector('input');
+  inp.addEventListener('input',()=>{if(state.pts[k]){state.pts[k]=null;showOk(k);routeNow();}onType(k);});
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();const l=box.querySelector('.list .it:not(.info)');if(l)l.click();else resolveAuto(k);}});
+  box.querySelector('.side').onclick=()=>{if(inp.value.trim())onType(k);else inp.focus();};});
+document.addEventListener('click',e=>{document.querySelectorAll('.ac').forEach(b=>{if(!b.contains(e.target))b.querySelector('.list').classList.remove('open');});});
+// géolocalisation (« Utiliser ma position »)
+$('geoBtn').onclick=()=>{if(!navigator.geolocation){toast('Localisation indisponible sur cet appareil');return;}
+  const lab=$('geoBtn').querySelector('span');lab.textContent='Localisation…';
+  navigator.geolocation.getCurrentPosition(async pos=>{const lat=pos.coords.latitude,lon=pos.coords.longitude;let r={titre:'Ma position',detail:`${lat.toFixed(5)}, ${lon.toFixed(5)}`,lat,lon};
+    try{const j=await (await fetch(`https://photon.komoot.io/reverse?lat=${lat}&lon=${lon}&lang=fr`)).json();if(j.features&&j.features[0]){const x=photonFeat(j.features[0]);r={...x,lat,lon,titre:x.titre||'Ma position'};}}catch(e){}
+    lab.textContent='Utiliser ma position';choose('B',r);},
+  ()=>{lab.textContent='Utiliser ma position';toast('Autorise la localisation dans ton téléphone');},{enableHighAccuracy:true,timeout:12000,maximumAge:60000});};
+
+/* ---------- itinéraire réel (OSRM / OpenStreetMap) ---------- */
+function sequence(){const P=state.pts;if(!P.B)return null;const C=P.C||P.A;const seq=[['A',P.A],['B',P.B],[P.C?'C':'A',C]];
+  if(CONFIG.compterRetour&&P.C)seq.push(['A',P.A]);return seq;}
+const ROUTERS=['https://routing.openstreetmap.de/routed-car/route/v1/driving/','https://router.project-osrm.org/route/v1/driving/'];
+let routeTok=0;
+async function routeNow(){const seq=sequence();const tok=++routeTok;
+  if(!seq){state.legs=null;renderRoute();update();drawMap();return;}
+  // estimation immédiate, remplacée par la vraie route
+  state.legs=[];for(let i=0;i<seq.length-1;i++){const a=seq[i][1],b=seq[i+1][1],d=hav(a,b),km=d*roadFactor(d);state.legs.push({from:seq[i][0],to:seq[i+1][0],km,min:km/72*60+4,loaded:i===1,geom:[[a.lat,a.lon],[b.lat,b.lon]],tollKm:0,tollRefs:[]});}
+  state.src='quick';renderRoute();update();drawMap();
+  const coords=seq.map(s=>`${s[1].lon.toFixed(6)},${s[1].lat.toFixed(6)}`).join(';');
+  for(const base of ROUTERS){try{
+    const r=await fetch(`${base}${coords}?overview=full&geometries=geojson&steps=true`);if(!r.ok)continue;const j=await r.json();if(tok!==routeTok)return;
+    if(j.code!=='Ok'||!j.routes||!j.routes[0])continue;const legs=j.routes[0].legs;if(legs.length!==state.legs.length)continue;
+    legs.forEach((lg,i)=>{const L=state.legs[i];L.km=lg.distance/1000;L.min=lg.duration/60;let tk=0;const refs=new Set();const geom=[];
+      (lg.steps||[]).forEach(st=>{const toll=(st.intersections||[]).some(x=>(x.classes||[]).includes('toll'));if(toll){tk+=st.distance;const rf=(st.ref||st.name||'').split(';')[0].trim();if(rf)refs.add(rf);}
+        ((st.geometry&&st.geometry.coordinates)||[]).forEach(c=>geom.push([c[1],c[0]]));});
+      L.tollKm=tk/1000;L.tollRefs=[...refs].slice(0,4);if(geom.length>1)L.geom=geom;
+      L.roads=[...new Set((lg.steps||[]).filter(s=>s.distance>3000).map(s=>(s.ref||'').split(';')[0].trim()).filter(Boolean))].slice(0,3);});
+    state.src='osrm';renderRoute();update();drawMap();return;}catch(e){}}
+  if(tok===routeTok){state.src='fallback';renderRoute();}}
+function tollInfo(){let km=0,refs=new Set();(state.legs||[]).forEach(l=>{km+=l.tollKm||0;(l.tollRefs||[]).forEach(r=>refs.add(r));});
+  const heavy=VEHICLES.find(v=>v.id===state.veh).truck==='lourd';return{km,refs:[...refs],cost:km*(heavy?CONFIG.peageKm.lourd:CONFIG.peageKm.leger)};}
+function renderRoute(){const rb=$('rb');if(!state.legs){rb.classList.remove('on');rb.innerHTML='';return;}
+  const km=state.legs.reduce((s,l)=>s+l.km,0),mn=state.legs.reduce((s,l)=>s+l.min,0),approx=state.src!=='osrm';
+  const name=k=>k==='A'?'Dépôt':k==='B'?'Panne':'Destination';
+  const legs=state.legs.map(l=>`<li><span class="sg${l.loaded?'':' d'}"></span><div><b>${name(l.from)} → ${name(l.to)}</b><small>${l.loaded?'Remorquage':'Trajet à vide'}${l.roads&&l.roads.length?' · '+esc(l.roads.join(', ')):''}</small></div><div class="r">${l.km.toFixed(0)} km<small>${fmtDur(l.min)}</small></div></li>`).join('');
+  const T=tollInfo();let tl='';
+  if(state.src==='osrm') tl=T.km>0.5?`<div class="note toll">${IC.warn}<div><b>Ce trajet passe par un péage</b><br>${T.refs.length?esc(T.refs.join(', '))+' · ':''}${T.km.toFixed(0)} km payants · environ ${eur(T.cost)} (compris dans le devis)</div></div>`:`<div class="note ok">${IC.check}<div><b>Pas de péage sur ce trajet</b></div></div>`;
+  if(state.src==='fallback') tl=`<div class="note toll">${IC.warn}<div>Calcul de route indisponible pour le moment : distance estimée. Appelle-nous pour un prix exact.</div></div>`;
+  rb.innerHTML=`<div class="kpis"><div class="kpi"><b>${approx?'≈ ':''}${km.toFixed(0)}<small> km</small></b><span>Distance</span></div><div class="kpi"><b>${fmtDur(mn)}</b><span>Route</span></div><div class="kpi"><b id="kFuel">–</b><span>Gasoil</span></div></div><ol class="legs">${legs}</ol>${tl}`;rb.classList.add('on');}
+
+/* ---------- carte (Leaflet + OpenStreetMap) ---------- */
+let map=null,layer=null;
+function pinIcon(letter,col,txt){return L.divIcon({className:'',iconSize:[30,38],iconAnchor:[15,37],html:`<svg class="mk" viewBox="0 0 30 38"><path d="M15 37C13 31 2 26 2 15A13 13 0 1 1 28 15C28 26 17 31 15 37Z" fill="${col}" stroke="#0B0C0C" stroke-width="2"/><text x="15" y="20" text-anchor="middle" font-size="13" font-weight="700" fill="${txt}" font-family="Inter,Arial">${letter}</text></svg>`});}
+function initMap(){if(map||!window.L)return;map=L.map('map',{zoomControl:true,attributionControl:true}).setView([CONFIG.depot.lat,CONFIG.depot.lon],10);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);layer=L.layerGroup().addTo(map);}
+function drawMap(){if(!window.L){$('map').style.display='none';return;}initMap();layer.clearLayers();const P=state.pts,pts=[];
+  (state.legs||[]).forEach(l=>{const g=l.geom.map(p=>[p[0],p[1]]);L.polyline(g,{color:'#0B0C0C',weight:l.loaded?9:7,opacity:.8}).addTo(layer);
+    L.polyline(g,l.loaded?{color:'#2FCB72',weight:5}:{color:'#2FCB72',weight:4,dashArray:'1 9',lineCap:'round',opacity:.85}).addTo(layer);g.forEach(p=>pts.push(p));});
+  const mk=(k,col,txt)=>{if(P[k]){L.marker([P[k].lat,P[k].lon],{icon:pinIcon(k==='A'?'D':k,col,txt)}).addTo(layer);pts.push([P[k].lat,P[k].lon]);}};
+  mk('A','#E8EBE9','#0B0C0C');mk('B','#EF5350','#fff');mk('C','#2FCB72','#05170C');
+  if(pts.length>1)map.fitBounds(pts,{padding:[34,34],maxZoom:14});else if(pts.length)map.setView(pts[0],12);}
+
+/* ---------- véhicules ---------- */
+function renderVeh(){$('veh').innerHTML='';VEHICLES.forEach(v=>{const b=document.createElement('button');b.className=v.id===state.veh?'on':'';b.setAttribute('aria-pressed',v.id===state.veh);
+  b.innerHTML=`${IC[v.ic]}<span>${v.n}</span>`;b.onclick=()=>{state.veh=v.id;renderVeh();renderRoute();update();};$('veh').appendChild(b);});}
+
+/* ---------- date / heure ---------- */
+function defaultRdv(){const d=new Date(Date.now()+30*60000);d.setMinutes(Math.ceil(d.getMinutes()/15)*15,0,0);const p=n=>String(n).padStart(2,'0');
+  $('rdvDate').value=`${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`;$('rdvHeure').value=`${p(d.getHours())}:${p(d.getMinutes())}`;}
+function rdvStart(){const d=$('rdvDate').value,h=$('rdvHeure').value;if(!d)return null;const[Y,M,D]=d.split('-').map(Number),[hh,mm]=(h||'08:00').split(':').map(Number);const t=new Date(Y,M-1,D,hh,mm);return isNaN(t)?null:t;}
+function rdvLabel(t){return `${t.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})} à ${String(t.getHours()).padStart(2,'0')}h${String(t.getMinutes()).padStart(2,'0')}`;}
+function isNight(t){if(!t)return false;const h=t.getHours(),d=t.getDay();return d===0||d===6||h<7||h>=20;}
+
+/* ---------- prix ---------- */
+function compute(){const v=VEHICLES.find(x=>x.id===state.veh),t=CONFIG.tarifs[state.veh],heavy=v.truck==='lourd',co=heavy?CONFIG.conso.lourd:CONFIG.conso.leger;
+  let km=0,kmCh=0;if(state.legs){km=state.legs.reduce((s,l)=>s+l.km,0);kmCh=state.legs.filter(l=>l.loaded).reduce((s,l)=>s+l.km,0);}
+  const litres=(km-kmCh)*co.vide/100+kmCh*co.charge/100,gasoil=litres*CONFIG.gasoil,kmFact=Math.max(0,km-CONFIG.kmInclus);
+  const lines=[{l:`Prise en charge ${v.n.toLowerCase()}`,s:`${CONFIG.kmInclus} km inclus`,v:t.pc}];
+  if(kmFact>0)lines.push({l:'Kilométrage',s:`${kmFact.toFixed(0)} km × ${eur(t.km)}`,v:kmFact*t.km});
+  if(litres>0)lines.push({l:'Gasoil',s:`${fr1(litres)} L × ${eur(CONFIG.gasoil)}`,v:gasoil});
+  const T=tollInfo();if(T.cost>0.5)lines.push({l:'Péages (estimation)',s:`${T.km.toFixed(0)} km d’autoroute payante`,v:T.cost});
+  let ht=lines.reduce((s,x)=>s+x.v,0);const night=isNight(rdvStart());
+  if(night&&CONFIG.majorationNuit>0){const m=(ht-(T.cost>0.5?T.cost:0))*CONFIG.majorationNuit/100;lines.push({l:'Majoration nuit / week-end',s:`+${CONFIG.majorationNuit} %`,v:m});ht+=m;}
+  const r=CONFIG.tva/100;let ttc,tva;if(CONFIG.prixTTC){ttc=ht;ht=ttc/(1+r);tva=ttc-ht;}else{tva=ht*r;ttc=ht+tva;}
+  return{v,km,litres,gasoil,lines,ht,tva,ttc,T,night};}
+function update(){const q=compute(),ready=!!state.legs;let h='';
+  q.lines.forEach(x=>{h+=`<tr><td>${x.l}${x.s?`<small>${x.s}</small>`:''}</td><td>${eur(x.v)}</td></tr>`;});
+  h+=CONFIG.prixTTC?`<tr class="tva"><td>dont TVA ${CONFIG.tva} %</td><td>${eur(q.tva)}</td></tr>`:`<tr class="ht"><td>Total HT</td><td>${eur(q.ht)}</td></tr><tr class="tva"><td>TVA ${CONFIG.tva} %</td><td>${eur(q.tva)}</td></tr>`;
+  $('qTable').innerHTML=h;$('qTotal').textContent=ready?eur(q.ttc):'–';
+  const kf=$('kFuel');if(kf)kf.innerHTML=q.litres?`${fr1(q.litres)}<small> L</small>`:'–';
+  $('nuitHint').innerHTML=q.night?`Nuit ou week-end : <b>+${CONFIG.majorationNuit} %</b> sur l’intervention.`:'';
+  $('waBtn').href=waLink(quoteText(q));
+  $('warn').textContent=state.pts.B?'':'Entre l’adresse de la panne pour calculer le trajet.';
+  $('totLbl').textContent=ready?'Total TTC estimé':'À partir de (TTC)';$('qTotal').textContent=eur(q.ttc);}
+function waLink(t){return `https://api.whatsapp.com/send?phone=${CONFIG.whatsapp}&text=${encodeURIComponent(t)}`;}
+function wazeLink(p){return p?`https://waze.com/ul?ll=${p.lat.toFixed(5)},${p.lon.toFixed(5)}&navigate=yes`:'';}
+function guessCC(n){if(/^0[67]\d{8}$/.test(n))return'33';if(/^04\d{8}$/.test(n))return'32';if(/^0[1-9]\d{7}$/.test(n))return'32';return'';}
+function toIntl(raw,cc){let d=String(raw||'').trim().replace(/[^\d+]/g,'');if(!d)return'';if(d.startsWith('+'))d=d.slice(1);else if(d.startsWith('00'))d=d.slice(2);else d=(guessCC(d)||cc)+d.replace(/^0/,'');d=d.replace(/\D/g,'');return d.length>=9&&d.length<=15?d:'';}
+function fmtIntl(d){if(!d)return'';const cc=['352','33','32','31','49'].find(c=>d.startsWith(c))||'';const rest=d.slice(cc.length);const head=cc==='33'?1:Math.min(3,rest.length%2?3:2);return'+'+cc+' '+rest.slice(0,head)+' '+rest.slice(head).replace(/(\d{2})(?=\d)/g,'$1 ');}
+function quoteText(q){const d=new Date();if(!state.quoteNo)state.quoteNo='ZZR-'+String(d.getFullYear()).slice(2)+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'-'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0');
+  const P=state.pts;let s=`🚛 DEMANDE DE DÉPANNAGE — ${CONFIG.nom}\nN° ${state.quoteNo}\n`;
+  const rdv=rdvStart();if(rdv)s+=`📅 ${rdvLabel(rdv)}\n`;
+  const c=$('client').value.trim(),ct=$('clientTel').value.trim();s+=`\n👤 ${c||'Client'}${ct?' · 📞 '+(fmtIntl(toIntl(ct,'32'))||ct):''}\n🚗 ${q.v.n}\n`;
+  const tb=P.B?`${P.B.titre}, ${P.B.detail}`:boxOf('B').querySelector('input').value.trim();
+  const tc=P.C?`${P.C.titre}, ${P.C.detail}`:'Dépôt ZZR';
+  if(tb)s+=`\n📍 Panne : ${tb}\n🚙 Waze : ${wazeLink(P.B)||'(adresse à confirmer)'}\n`;
+  s+=`🏁 Destination : ${tc}\n`;if(q.km)s+=`📏 ${q.km.toFixed(0)} km au total${q.T.km>0.5?` · péage ${q.T.refs.join(', ')}`:''}\n`;
+  s+='\n';q.lines.forEach(x=>s+=`• ${x.l} : ${eur(x.v)}\n`);
+  s+=`\nTOTAL TTC estimé : ${eur(q.ttc)} (dont TVA ${CONFIG.tva} % : ${eur(q.tva)})\n\nMerci de me confirmer l’intervention.`;return s;}
+['client','clientTel','rdvDate','rdvHeure'].forEach(id=>{$(id).addEventListener('input',update);$(id).addEventListener('change',update);});
+
+/* ---------- pied de page + contacts ---------- */
+function footer(){const g=CONFIG.legal;const parts=[`<b>${esc(CONFIG.nom)}</b> · ${esc(CONFIG.telephone)}`,'Dépannage et remorquage à Mons, dans le Hainaut et partout en Belgique.'];
+  if(g.societe)parts.push(esc(g.societe));if(g.adresse)parts.push(esc(g.adresse));if(g.bce)parts.push('N° d’entreprise / TVA : '+esc(g.bce));if(g.email)parts.push(esc(g.email));
+  parts.push('Prix indicatifs TVA comprise, confirmés par téléphone. Carte et itinéraires © contributeurs OpenStreetMap.');$('legal').innerHTML=parts.join('<br>');}
+function contacts(){const tel='+'+CONFIG.whatsapp;['topTel','barCall'].forEach(id=>$(id).href='tel:'+tel);$('topTel').textContent=CONFIG.telephone.replace('+32 ','0');
+  $('barWa').href=waLink('Bonjour '+CONFIG.nom+', j’ai besoin d’un dépannage.');$('depotTxt').textContent=CONFIG.depot.titre;}
+
+$('waBtn').addEventListener('click',e=>{if(!state.pts.B&&!boxOf('B').querySelector('input').value.trim()){e.preventDefault();toast('Entre d’abord l’adresse de la panne');boxOf('B').querySelector('input').focus();}});
+contacts();footer();defaultRdv();renderVeh();update();
+window.addEventListener('load',()=>{drawMap();});
+</script>
+</body>
+</html>

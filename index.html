@@ -94,6 +94,7 @@
   .pt{width:14px;height:14px;border-radius:50%;flex:0 0 14px}
   .pt-A{border:3px solid var(--tx);background:var(--s1)} .pt-B{background:var(--red);box-shadow:0 0 0 4px rgba(239,83,80,.18)} .pt-C{background:var(--ac);border-radius:3px}
   .ac{margin-top:16px}
+  .lbl-s{float:right;font-weight:500;color:var(--tx3);font-size:13px}
   .lbl .pt{display:inline-block;vertical-align:-2px;margin-right:8px;width:12px;height:12px;flex:none}
   .inwrap{position:relative}
   .inwrap input{padding-right:58px}
@@ -263,8 +264,8 @@
     </div>
 
     <div class="ac" data-k="C">
-      <label class="lbl"><span class="pt pt-C"></span>Où déposer le véhicule&nbsp;?</label>
-      <div class="inwrap"><input type="text" placeholder="Garage, domicile… (vide = notre dépôt)" autocomplete="off" enterkeyhint="search"><button class="side" aria-label="Rechercher"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button></div>
+      <label class="lbl"><span class="pt pt-C"></span>Où déposer le véhicule&nbsp;?<span class="lbl-s">vide = notre dépôt</span></label>
+      <div class="inwrap"><input type="text" placeholder="Ville, garage, adresse…" autocomplete="off" enterkeyhint="search"><button class="side" aria-label="Rechercher"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button></div>
       <div class="okc"></div><div class="list"></div>
     </div>
 
@@ -321,8 +322,8 @@
   <h3 id="sosTitle">On te localise…</h3><div id="sosBody"></div>
   <div id="sosMore" hidden>
     <div class="ac" data-k="C">
-      <label class="lbl"><span class="pt pt-C"></span>Où doit-on livrer le véhicule&nbsp;?</label>
-      <div class="inwrap"><input type="text" placeholder="Garage, domicile… (vide = notre dépôt)" autocomplete="off" enterkeyhint="search"><button class="side" aria-label="Rechercher"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button></div>
+      <label class="lbl"><span class="pt pt-C"></span>Où livrer le véhicule&nbsp;?<span class="lbl-s">vide = notre dépôt</span></label>
+      <div class="inwrap"><input type="text" placeholder="Ville, garage, adresse…" autocomplete="off" enterkeyhint="search"><button class="side" aria-label="Rechercher"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button></div>
       <div class="okc"></div><div class="list"></div>
     </div>
     <label class="lbl fld2">Ton véhicule</label><div class="sv" id="sosVeh"></div>

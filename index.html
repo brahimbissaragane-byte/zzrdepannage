@@ -193,7 +193,7 @@
   @media (prefers-reduced-motion:reduce){.sos-ic::after{animation:none;opacity:0}}
   .sheet-bg{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.62);display:flex;align-items:flex-end;justify-content:center}
   .sheet-bg[hidden]{display:none}
-  .sheet{position:relative;width:100%;max-width:640px;background:var(--s1);border:1px solid var(--bd);border-bottom:0;border-radius:20px 20px 0 0;padding:10px 16px calc(20px + env(safe-area-inset-bottom));animation:shup .25s cubic-bezier(.2,.8,.2,1)}
+  .sheet{position:relative;width:100%;max-width:640px;max-height:92vh;max-height:92dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:var(--s1);border:1px solid var(--bd);border-bottom:0;border-radius:20px 20px 0 0;padding:10px 16px calc(20px + env(safe-area-inset-bottom));animation:shup .25s cubic-bezier(.2,.8,.2,1)}
   @keyframes shup{from{transform:translateY(30px);opacity:.4}to{transform:none;opacity:1}}
   .grab{width:42px;height:5px;border-radius:3px;background:var(--bd2);margin:0 auto 14px}
   .sheet .x{position:absolute;top:12px;right:10px;width:40px;height:40px;border:0;border-radius:50%;background:var(--s2);color:var(--tx2);display:grid;place-items:center}
@@ -205,6 +205,21 @@
   .loc small{display:block;font-size:14px;color:var(--tx3);margin-top:2px}
   .loc .lk{display:inline-block;margin-top:6px;color:var(--ac);font-weight:600;font-size:14px;text-decoration:none}
   .btn.wa{background:var(--wa);color:#fff}
+  #sosMore .ac{margin-top:16px}
+  .fld2{margin-top:14px}
+  .sv{display:flex;flex-wrap:wrap;gap:7px}
+  .sv button{height:38px;padding:0 13px;border-radius:999px;border:1px solid var(--bd);background:var(--s2);color:var(--tx2);font-weight:600;font-size:14px}
+  .sv button.on{border-color:var(--ac);background:var(--acT);color:var(--tx)}
+  .sp{margin-top:14px}
+  .sp:empty{display:none}
+  .sp{padding:13px 14px;border-radius:12px;border:1px solid var(--bd2);background:var(--s2)}
+  .sp-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .sp-top span{font-size:14px;font-weight:600;color:var(--tx2)}
+  .sp-top b{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .sp-l{display:flex;align-items:center;gap:7px;font-size:14px;color:var(--tx2);margin-top:5px}
+  .sp-l svg.i{width:16px;height:16px}
+  .sp-l.warn2{color:var(--amber)}
+  .sp-l .spin{width:13px;height:13px}
   .lk2{display:block;text-align:center;margin-top:14px;color:var(--tx2);font-weight:600;font-size:15px;text-decoration:none}
   .toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--tx);color:var(--bg);font-weight:600;padding:12px 18px;border-radius:12px;z-index:2000;display:none}
 </style>
@@ -304,6 +319,17 @@
 <div class="sheet-bg" id="sosSheet" hidden><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sosTitle">
   <div class="grab"></div><button class="x" id="sosClose" aria-label="Fermer"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   <h3 id="sosTitle">On te localise…</h3><div id="sosBody"></div>
+  <div id="sosMore" hidden>
+    <div class="ac" data-k="C">
+      <label class="lbl"><span class="pt pt-C"></span>Où doit-on livrer le véhicule&nbsp;?</label>
+      <div class="inwrap"><input type="text" placeholder="Garage, domicile… (vide = notre dépôt)" autocomplete="off" enterkeyhint="search"><button class="side" aria-label="Rechercher"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button></div>
+      <div class="okc"></div><div class="list"></div>
+    </div>
+    <label class="lbl fld2">Ton véhicule</label><div class="sv" id="sosVeh"></div>
+    <div class="sp" id="sosPrice"></div>
+    <a class="btn wa mt" id="sosWa" href="#" target="_blank" rel="noopener"><svg class="i" viewBox="0 0 24 24"><path d="M4 19V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2H8.5z"/></svg><span>Envoyer ma demande sur WhatsApp</span></a>
+    <div class="f2 mt"><a class="btn ghost" id="sosSms" href="#">Par SMS</a><a class="btn ghost" id="sosTel" href="tel:+32492365899"><svg class="i" viewBox="0 0 24 24"><path d="M5.5 4h3l1.5 4-2 1.3a11 11 0 0 0 5.2 5.2l1.3-2 4 1.5v3a2 2 0 0 1-2 2A16 16 0 0 1 3.5 6a2 2 0 0 1 2-2z"/></svg><span>Appeler</span></a></div>
+  </div>
 </div></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
@@ -629,7 +655,9 @@ async function remoteSearch(k,q){const ref=refFor(k)||CONFIG.depot,key=q.toLower
   const r=await fetch(url,{signal:ctrl[k].signal});if(!r.ok)throw new Error('http');const j=await r.json();
   const seen=new Set(),res=[];(j.features||[]).forEach(f=>{const x=photonFeat(f);const id=x.titre+'|'+x.detail;if(x.titre&&!seen.has(id)){seen.add(id);res.push(x);}});
   cache.set(key,res.slice(0,5));return res.slice(0,5);}
-const boxOf=k=>document.querySelector(`.ac[data-k="${k}"]`);
+const curBox={};
+const boxesOf=k=>[...document.querySelectorAll(`.ac[data-k="${k}"]`)];
+const boxOf=k=>curBox[k]||boxesOf(k)[0];
 function refFor(k){return k==='B'?state.pts.A:(state.pts.B||state.pts.A);}
 function renderList(k,loc,remote,st){const list=boxOf(k).querySelector('.list'),ref=refFor(k);list.innerHTML='';
   const add=a=>a.forEach(r=>{const d=document.createElement('div');d.className='it';const km=ref?Math.round(hav(ref,r)*roadFactor(hav(ref,r))):null;
@@ -648,15 +676,17 @@ async function resolveAuto(k){const q=boxOf(k).querySelector('input').value.trim
   if(loc.length&&!needRemote(q,loc)){choose(k,loc[0]);return true;}
   try{const rr=await remoteSearch(k,q);if(rr.length){choose(k,rr[0]);return true;}}catch(e){}
   if(loc.length){choose(k,loc[0]);return true;}return false;}
-function choose(k,r){const box=boxOf(k);clearTimeout(timers[k]);if(ctrl[k])ctrl[k].abort();box.querySelector('.list').classList.remove('open');
-  state.pts[k]={titre:String(r.titre||''),detail:String(r.detail||''),lat:+r.lat,lon:+r.lon};box.querySelector('input').value=state.pts[k].titre;box.querySelector('input').blur();showOk(k);routeNow();}
-function showOk(k){const ok=boxOf(k).querySelector('.okc'),p=state.pts[k];if(!p){ok.classList.remove('on');ok.innerHTML='';return;}
+function choose(k,r){clearTimeout(timers[k]);if(ctrl[k])ctrl[k].abort();
+  state.pts[k]={titre:String(r.titre||''),detail:String(r.detail||''),lat:+r.lat,lon:+r.lon};
+  boxesOf(k).forEach(b=>{b.querySelector('.list').classList.remove('open');const i=b.querySelector('input');i.value=state.pts[k].titre;i.blur();});showOk(k);routeNow();}
+function showOk(k){const p=state.pts[k];boxesOf(k).forEach(box=>{const ok=box.querySelector('.okc');if(!p){ok.classList.remove('on');ok.innerHTML='';return;}
   ok.innerHTML=`${IC.check}<span class="tx">${esc(p.detail)}</span><button data-clear>Modifier</button>`;ok.classList.add('on');
-  ok.querySelector('[data-clear]').onclick=()=>{state.pts[k]=null;showOk(k);const i=boxOf(k).querySelector('input');i.value='';i.focus();routeNow();};}
+  ok.querySelector('[data-clear]').onclick=()=>{state.pts[k]=null;showOk(k);boxesOf(k).forEach(b=>b.querySelector('input').value='');curBox[k]=box;box.querySelector('input').focus();routeNow();};});}
 document.querySelectorAll('.ac').forEach(box=>{const k=box.dataset.k,inp=box.querySelector('input');
-  inp.addEventListener('input',()=>{if(state.pts[k]){state.pts[k]=null;showOk(k);routeNow();}onType(k);});
+  inp.addEventListener('focus',()=>{curBox[k]=box;});
+  inp.addEventListener('input',()=>{curBox[k]=box;if(state.pts[k]){state.pts[k]=null;showOk(k);boxesOf(k).forEach(b=>{if(b!==box)b.querySelector('input').value='';});routeNow();}onType(k);});
   inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();const l=box.querySelector('.list .it:not(.info)');if(l)l.click();else resolveAuto(k);}});
-  box.querySelector('.side').onclick=()=>{if(inp.value.trim())onType(k);else inp.focus();};});
+  box.querySelector('.side').onclick=()=>{curBox[k]=box;if(inp.value.trim())onType(k);else inp.focus();};});
 document.addEventListener('click',e=>{document.querySelectorAll('.ac').forEach(b=>{if(!b.contains(e.target))b.querySelector('.list').classList.remove('open');});});
 // géolocalisation (partagée par « Utiliser ma position » et « JE SUIS EN PANNE »)
 function locate(){return new Promise((ok,ko)=>{if(!navigator.geolocation){ko({code:0});return;}
@@ -664,7 +694,8 @@ function locate(){return new Promise((ok,ko)=>{if(!navigator.geolocation){ko({co
     let r={titre:'Ma position',detail:`${lat.toFixed(5)}, ${lon.toFixed(5)}`,lat,lon,acc,addr:false};
     try{const c=new AbortController(),t=setTimeout(()=>c.abort(),4500);
       const j=await (await fetch(`https://photon.komoot.io/reverse?lat=${lat}&lon=${lon}&lang=fr`,{signal:c.signal})).json();clearTimeout(t);
-      if(j.features&&j.features[0]){const x=photonFeat(j.features[0]);if(x.titre)r={...r,titre:x.titre,detail:x.detail,addr:true};}}catch(e){}
+      if(j.features&&j.features[0]){const x=photonFeat(j.features[0]),pp=j.features[0].properties||{};
+        const t=pp.street?(pp.housenumber?`${pp.street} ${pp.housenumber}`:pp.street):x.titre;if(t)r={...r,titre:t,detail:x.detail,addr:true};}}catch(e){}
     ok(r);},e=>ko(e||{code:2}),{enableHighAccuracy:true,timeout:12000,maximumAge:30000});});}
 $('geoBtn').onclick=async()=>{const lab=$('geoBtn').querySelector('span');lab.textContent='Localisation…';
   try{const r=await locate();choose('B',r);}catch(e){toast(e.code===1?'Autorise la localisation dans ton téléphone':'Position introuvable, tape ton adresse');}
@@ -673,35 +704,46 @@ $('geoBtn').onclick=async()=>{const lab=$('geoBtn').querySelector('span');lab.te
 /* ---------- JE SUIS EN PANNE : position GPS envoyée en 1 toucher ---------- */
 const isIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const smsLink=t=>`sms:+${CONFIG.whatsapp}${isIOS?'&':'?'}body=${encodeURIComponent(t)}`;
-function sosText(r){const now=new Date(),hh=String(now.getHours()).padStart(2,'0')+'h'+String(now.getMinutes()).padStart(2,'0');
+function sosText(r,q){const now=new Date(),hh=String(now.getHours()).padStart(2,'0')+'h'+String(now.getMinutes()).padStart(2,'0');
   let s='🚨 JE SUIS EN PANNE — demande urgente\n\n';
   if(r){const ll=`${r.lat.toFixed(5)},${r.lon.toFixed(5)}`;
     if(r.addr)s+=`📍 ${r.titre}, ${r.detail}\n`;else s+='📍 Position GPS ci-dessous\n';
     s+=`🗺️ Google Maps : https://maps.google.com/?q=${ll}\n🚙 Waze : https://waze.com/ul?ll=${ll}&navigate=yes\n`;
     if(r.acc)s+=`🎯 Précision : ± ${r.acc} m\n`;}
   else s+='📍 Je n’ai pas pu envoyer ma position, je te la donne par message.\n';
+  if(q){const P=state.pts;s+=`\n🏁 À livrer : ${P.C?`${P.C.titre}, ${P.C.detail}`:'à votre dépôt'}\n${'🚗'} ${q.v.n}\n`;
+    if(state.legs&&state.legs.length)s+=`💶 Prix estimé : ${eur(q.ttc)} TTC (${q.km.toFixed(0)} km${q.T.km>0.5?', péage compris':''}${q.night?', majoration nuit/week-end':''})\n`;}
   const c=$('client').value.trim(),ct=$('clientTel').value.trim();if(c||ct)s+=`👤 ${c||''}${ct?' · 📞 '+(fmtIntl(toIntl(ct,'32'))||ct):''}\n`;
   s+=`🕒 Envoyé à ${hh}\n\nMerci de me rappeler au plus vite.`;return s;}
 const ICP='<svg class="i" viewBox="0 0 24 24"><path d="M5.5 4h3l1.5 4-2 1.3a11 11 0 0 0 5.2 5.2l1.3-2 4 1.5v3a2 2 0 0 1-2 2A16 16 0 0 1 3.5 6a2 2 0 0 1 2-2z"/></svg>';
 const ICW='<svg class="i" viewBox="0 0 24 24"><path d="M4 19V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2H8.5z"/></svg>';
 function sheet(open){const bg=$('sosSheet');bg.hidden=!open;document.body.style.overflow=open?'hidden':'';if(!open)$('sosBtn').focus();}
-function sosRender(st,r,err){const b=$('sosBody'),tel='tel:+'+CONFIG.whatsapp;
+let sosPos=null;
+function sosRender(st,r,err){const b=$('sosBody'),tel='tel:+'+CONFIG.whatsapp;$('sosMore').hidden=st!=='ok';
   if(st==='load'){$('sosTitle').textContent='On te localise…';b.innerHTML='<div class="loc"><span class="spin"></span><div>Garde la page ouverte, ça prend quelques secondes.<small>Si ton téléphone demande, touche « Autoriser ».</small></div></div>';return;}
-  if(st==='ok'){$('sosTitle').textContent='Ta position est prête';const t=sosText(r);
+  if(st==='ok'){$('sosTitle').textContent='Ta position est prête';
     b.innerHTML=`<div class="loc">${IC.pin}<div><b>${esc(r.addr?r.titre:'Position GPS trouvée')}</b><small>${esc(r.detail)}${r.acc?` · précision ± ${r.acc} m`:''}</small>
-      <a class="lk" href="https://maps.google.com/?q=${r.lat.toFixed(5)},${r.lon.toFixed(5)}" target="_blank" rel="noopener">Vérifier sur la carte</a></div></div>
-      <a class="btn wa mt" id="sosWa" href="${waLink(t)}" target="_blank" rel="noopener">${ICW}<span>Envoyer ma position sur WhatsApp</span></a>
-      <div class="f2 mt"><a class="btn ghost" id="sosSms" href="${smsLink(t)}">Par SMS</a><a class="btn ghost" href="${tel}">${ICP}<span>Appeler</span></a></div>
-      <a class="lk2" href="#devis" id="sosQuote">Voir aussi le prix estimé ↓</a>`;
-    $('sosQuote').onclick=()=>sheet(false);return;}
+      <a class="lk" href="https://maps.google.com/?q=${r.lat.toFixed(5)},${r.lon.toFixed(5)}" target="_blank" rel="noopener">Vérifier sur la carte</a></div></div>`;
+    sosVeh();sosUpdate();return;}
   $('sosTitle').textContent='Position introuvable';
   const why=err&&err.code===1?'La localisation est bloquée. Sur iPhone : <strong>Réglages › Confidentialité › Service de localisation</strong>, puis ton navigateur → «&nbsp;Lorsque l’app est active&nbsp;».':'Le signal GPS est trop faible ou la localisation est indisponible.';
   b.innerHTML=`<div class="loc">${IC.warn}<div>${why}</div></div>
     <a class="btn primary mt" href="${tel}">${ICP}<span>Appeler maintenant</span></a>
     <div class="f2 mt"><button class="btn ghost" id="sosRetry">Réessayer</button><a class="btn ghost" href="${waLink(sosText(null))}" target="_blank" rel="noopener">${ICW}<span>WhatsApp</span></a></div>`;
   $('sosRetry').onclick=sosStart;}
-async function sosStart(){sheet(true);sosRender('load');
-  try{const r=await locate();sosRender('ok',r);if(!state.pts.B)choose('B',r);}catch(e){sosRender('err',null,e);}}
+const SHORT={moto:'Moto',voit:'Voiture',util:'Camionnette',camp:'Camping-car',cam:'Camion',autre:'Autre'};
+function sosVeh(){$('sosVeh').innerHTML=VEHICLES.map(v=>`<button data-v="${v.id}" class="${v.id===state.veh?'on':''}" aria-pressed="${v.id===state.veh}">${SHORT[v.id]}</button>`).join('');
+  $('sosVeh').querySelectorAll('button').forEach(bt=>bt.onclick=()=>{state.veh=bt.dataset.v;renderVeh();renderRoute();update();sosVeh();});}
+function sosUpdate(){if($('sosSheet').hidden||!sosPos)return;const q=compute(),ready=!!state.legs&&state.legs.length,exact=state.src==='osrm';
+  const eta=ready?state.legs[0].min:0;
+  $('sosPrice').innerHTML=ready?`<div class="sp-top"><span>Prix estimé TTC</span><b>${exact?'':'≈ '}${eur(q.ttc)}</b></div>
+    <div class="sp-l">${q.km.toFixed(0)} km au total · dépanneuse chez toi en ~${fmtDur(eta)}</div>
+    ${q.T.km>0.5?`<div class="sp-l warn2">${IC.warn}Péage sur le trajet (~${eur(q.T.cost)} compris)</div>`:''}
+    ${q.night?`<div class="sp-l">Nuit ou week-end : +${CONFIG.majorationNuit} % compris</div>`:''}
+    ${exact?'':'<div class="sp-l"><span class="spin"></span>Calcul du trajet exact…</div>'}`:'';
+  const t=sosText(sosPos,q);$('sosWa').href=waLink(t);$('sosSms').href=smsLink(t);}
+async function sosStart(){sosPos=null;sheet(true);sosRender('load');defaultRdv();
+  try{const r=await locate();sosPos=r;choose('B',r);sosRender('ok',r);}catch(e){sosRender('err',null,e);}}
 $('sosBtn').onclick=sosStart;
 $('sosClose').onclick=()=>sheet(false);
 $('sosSheet').addEventListener('click',e=>{if(e.target.id==='sosSheet')sheet(false);});
@@ -782,7 +824,8 @@ function update(){const q=compute(),ready=!!state.legs;let h='';
   $('nuitHint').innerHTML=q.night?`Nuit ou week-end : <b>+${CONFIG.majorationNuit} %</b> sur l’intervention.`:'';
   $('waBtn').href=waLink(quoteText(q));
   $('warn').textContent=state.pts.B?'':'Entre l’adresse de la panne pour calculer le trajet.';
-  $('totLbl').textContent=ready?'Total TTC estimé':'À partir de (TTC)';$('qTotal').textContent=eur(q.ttc);}
+  $('totLbl').textContent=ready?'Total TTC estimé':'À partir de (TTC)';$('qTotal').textContent=eur(q.ttc);
+  if(typeof sosUpdate==='function')sosUpdate();}
 function waLink(t){return `https://api.whatsapp.com/send?phone=${CONFIG.whatsapp}&text=${encodeURIComponent(t)}`;}
 function wazeLink(p){return p?`https://waze.com/ul?ll=${p.lat.toFixed(5)},${p.lon.toFixed(5)}&navigate=yes`:'';}
 function guessCC(n){if(/^0[67]\d{8}$/.test(n))return'33';if(/^04\d{8}$/.test(n))return'32';if(/^0[1-9]\d{7}$/.test(n))return'32';return'';}

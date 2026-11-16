@@ -73,7 +73,7 @@
   @keyframes qin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   @media (prefers-reduced-motion:reduce){.qcard{animation:none}}
   /* comment ça marche */
-  .how{margin:28px 0 8px}
+  .how{margin:28px auto 8px}
   .sec-t{margin:0 0 12px;font-family:var(--fc);font-weight:800;font-style:italic;font-size:24px;letter-spacing:-.01em}
   .steps{list-style:none;margin:0;padding:0;display:grid;gap:8px}
   .steps li{display:flex;gap:14px;align-items:flex-start;background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:14px}
@@ -235,6 +235,40 @@
   .lk2{display:block;text-align:center;margin-top:14px;color:var(--tx2);font-weight:600;font-size:15px;text-decoration:none}
   .toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--ink);color:#fff;font-weight:600;padding:12px 18px;border-radius:12px;z-index:2000;display:none}
   @media(min-width:640px){.hero h1{font-size:46px}}
+  /* tarifs */
+  .tar{display:grid;gap:0}
+  .tar .r{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;padding:11px 0;border-bottom:1px dashed var(--bd2);font-size:15.5px}
+  .tar .r:last-child{border-bottom:0}
+  .tar .r b{font-weight:600}
+  .tar .r span{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .tar .r.h{padding:0 0 6px;border-bottom:1px solid var(--bd)}
+  .tar .r.h span{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tx3)}
+  .tar .r span.pc{font-weight:700}
+  /* FAQ */
+  .faq{margin:28px 0 8px}
+  .faq details{background:var(--s1);border:1px solid var(--bd);border-radius:16px;margin-bottom:8px;overflow:hidden}
+  .faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px;font-weight:700;font-size:16px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:'+';flex:0 0 28px;height:28px;border-radius:50%;background:var(--s3);display:grid;place-items:center;font-size:20px;font-weight:500;line-height:28px;text-align:center;transition:transform .2s}
+  .faq details[open] summary::after{transform:rotate(45deg);background:var(--ink);color:var(--ac)}
+  .faq details p{margin:0;padding:0 16px 16px;color:var(--tx2);font-size:15.5px}
+  .faq details p b{color:var(--tx)}
+  /* accessibilité */
+  a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+  /* grand écran */
+  @media(min-width:960px){
+    .top .in{max-width:1080px}
+    .sos-wrap{max-width:1080px}
+    .hero.wrap,.how.wrap{max-width:1080px}
+    .hero{display:grid;grid-template-columns:1.05fr 1fr;column-gap:48px;align-items:center;padding-top:36px}
+    .hero>*:not(.ph0){grid-column:1}
+    .hero .ph0{grid-column:2;grid-row:1/span 4;margin-top:0;aspect-ratio:4/3}
+    .hero h1{font-size:56px}
+    .steps{grid-template-columns:repeat(3,1fr)}
+    .steps li{flex-direction:column}
+    .steps .n{flex:none;width:36px}
+  }
+
 </style>
 </head>
 <body>
@@ -327,6 +361,21 @@
       <div><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Épaves</div>
     </div>
     <p class="hint">Mons, Jemappes, Quaregnon, Saint-Ghislain, Boussu, Frameries, La Louvière, Charleroi, Tournai… et partout en Belgique.</p>
+  </section>
+
+  <section class="panel" id="tarifs">
+    <div class="ph"><h2>Nos tarifs</h2><span class="step">TVA comprise</span></div>
+    <div class="tar" id="tarList"></div>
+    <p class="hint" id="tarNote"></p>
+  </section>
+
+  <section class="faq" aria-labelledby="faqT">
+    <h2 class="sec-t" id="faqT">Questions fréquentes</h2>
+    <details><summary>Combien coûte un dépannage&nbsp;?</summary><p>Pour une voiture, la prise en charge est à <b data-c="pcVoit"></b> avec <b data-c="kmInclus"></b> compris. Ensuite c’est <b data-c="kmVoit"></b> par km, plus le gasoil. Le calculateur ci-dessus te donne le prix exact de ton trajet.</p></details>
+    <details><summary>Intervenez-vous la nuit et le week-end&nbsp;?</summary><p>Oui. La nuit (20 h – 7 h) et le week-end, une majoration de <b data-c="nuit"></b> s’applique. Elle est déjà comprise dans le prix affiché par le calculateur.</p></details>
+    <details><summary>Où déposez-vous mon véhicule&nbsp;?</summary><p>Où tu veux&nbsp;: ton garage, chez toi, chez un concessionnaire… Si tu ne sais pas encore, on le dépose à notre dépôt de Mons.</p></details>
+    <details><summary>Le prix affiché est-il définitif&nbsp;?</summary><p>C’est une estimation TVA comprise, calculée sur le vrai trajet. On te la confirme par téléphone avant de partir&nbsp;: tu connais le prix avant l’intervention.</p></details>
+    <details><summary>Quels véhicules dépannez-vous&nbsp;?</summary><p>Motos et scooters, voitures, camionnettes, camping-cars et camions / poids lourds.</p></details>
   </section>
 
   <footer id="legal"></footer>
@@ -879,6 +928,15 @@ window.addEventListener('load',()=>{drawMap();});
 (function(){const t=CONFIG.tarifs.voit,km=38,c=CONFIG.conso.leger,l=km/2*c.vide/100+km/2*c.charge/100;
   let v=t.pc+Math.max(0,km-CONFIG.kmInclus)*t.km+l*CONFIG.gasoil;if(!CONFIG.prixTTC)v*=1+CONFIG.tva/100;
   const e=document.getElementById('exP');if(e)e.textContent=v.toFixed(2).replace('.',',')+'\u00a0€';})();
+/* tarifs + FAQ, toujours à jour avec CONFIG */
+(function(){const e0=n=>Number.isInteger(n)?n+' €':eur(n);
+  const tl=document.getElementById('tarList');if(tl)tl.innerHTML='<div class="r h"><span></span><span>Prise en charge</span><span>Par km</span></div>'+VEHICLES.filter(v=>v.id!=='autre').map(v=>{const t=CONFIG.tarifs[v.id];
+    return `<div class="r"><b>${v.n}</b><span class="pc">${e0(t.pc)}</span><span>${eur(t.km)}</span></div>`}).join('');
+  const tn=document.getElementById('tarNote');if(tn)tn.innerHTML=`${CONFIG.kmInclus} premiers km compris · gasoil ${eur(CONFIG.gasoil)}/L en plus · nuit et week-end <b>+${CONFIG.majorationNuit} %</b>`;
+  const C={pcVoit:e0(CONFIG.tarifs.voit.pc),kmInclus:CONFIG.kmInclus+' km',kmVoit:eur(CONFIG.tarifs.voit.km),nuit:CONFIG.majorationNuit+' %'};
+  document.querySelectorAll('[data-c]').forEach(b=>b.textContent=C[b.dataset.c]);
+  const qa=[...document.querySelectorAll('.faq details')].map(d=>({"@type":"Question","name":d.querySelector('summary').textContent,"acceptedAnswer":{"@type":"Answer","text":d.querySelector('p').textContent}}));
+  const sc=document.createElement('script');sc.type='application/ld+json';sc.textContent=JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":qa});document.head.appendChild(sc);})();
 </script>
 </body>
 </html>

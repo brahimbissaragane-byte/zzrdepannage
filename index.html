@@ -271,7 +271,9 @@
   @keyframes sosGo{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
   @keyframes sosNudge{0%,82%,100%{transform:none}84%{transform:translateX(-6px) rotate(-1.2deg)}86%{transform:translateX(6px) rotate(1.2deg)}88%{transform:translateX(-5px) rotate(-.8deg)}90%{transform:translateX(4px) rotate(.6deg)}92%{transform:translateX(-2px)}94%{transform:none}}
   .sos b{transform-origin:left center;animation:sosZoom 2s ease-in-out infinite}
-  @keyframes sosZoom{0%,60%,100%{transform:scale(1)}75%{transform:scale(1.1)}}
+  @keyframes sosZoom{0%,60%,100%{transform:scale(1)}75%{transform:scale(1.22)}}
+  @media(max-width:370px){.sos b{animation-name:sosZoomS}}
+  @keyframes sosZoomS{0%,60%,100%{transform:scale(1)}75%{transform:scale(1.14)}}
   .sos:active{animation:none;transform:scale(.97)}
   @media (prefers-reduced-motion:reduce){.sos,.sos b,.sos::after,.sos .chev,.sos-ic .sw,.sos-ic .bl{animation:none}.sos::after{display:none}}
 </style>

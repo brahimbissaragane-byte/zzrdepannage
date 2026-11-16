@@ -270,12 +270,16 @@
   @keyframes sosShine{0%,55%{left:-50%}100%{left:130%}}
   @keyframes sosGo{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
   @keyframes sosNudge{0%,84%,100%{transform:none}85.5%{transform:translateX(-6px) rotate(-1.4deg)}87%{transform:translateX(6px) rotate(1.4deg)}88.5%{transform:translateX(-6px) rotate(-1.2deg)}90%{transform:translateX(5px) rotate(1deg)}91.5%{transform:translateX(-5px) rotate(-.8deg)}93%{transform:translateX(4px) rotate(.6deg)}94.5%{transform:translateX(-3px)}96%{transform:translateX(2px)}97.5%{transform:none}}
+  /* gyrophare : faisceau orange qui tourne depuis l'icône + fond qui alterne rouge / rouge foncé en dégradé */
+  .sos{background:linear-gradient(100deg,#7A1010 0%,#C42222 25%,#F04848 50%,#C42222 75%,#7A1010 100%);background-size:220% 100%;animation:sosNudge 3s linear infinite,sosRed 2.4s ease-in-out infinite alternate}
+  @keyframes sosRed{from{background-position:0% 50%}to{background-position:100% 50%}}
+  .sos::before{content:'';position:absolute;left:38px;top:50%;width:900px;height:900px;margin:-450px 0 0 -450px;background:conic-gradient(from 0deg,transparent 0 62%,rgba(255,170,60,0) 64%,rgba(255,190,90,.5) 70%,rgba(255,255,255,0) 76%,transparent 100%);animation:sosSpin 1.6s linear infinite;z-index:0;pointer-events:none}
   .sos b{transform-origin:left center;animation:sosZoom 2s ease-in-out infinite}
   @keyframes sosZoom{0%,60%,100%{transform:scale(1)}75%{transform:scale(1.22)}}
   @media(max-width:370px){.sos b{animation-name:sosZoomS}}
   @keyframes sosZoomS{0%,60%,100%{transform:scale(1)}75%{transform:scale(1.14)}}
   .sos:active{animation:none;transform:scale(.97)}
-  @media (prefers-reduced-motion:reduce){.sos,.sos b,.sos::after,.sos .chev,.sos-ic .sw,.sos-ic .bl{animation:none}.sos::after{display:none}}
+  @media (prefers-reduced-motion:reduce){.sos,.sos b,.sos::before,.sos::after,.sos .chev,.sos-ic .sw,.sos-ic .bl{animation:none}.sos::after{display:none}}
 </style>
 </head>
 <body>
